@@ -12,7 +12,7 @@ public class Board {
     }
 
     // Fill the bottom of the playing board with black pieces (1s)
-    private int[][] fillBlacks() {
+    private void fillBlacks() {
         for (int i = 5; i < 8; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (j % 2 == 0) {
@@ -24,11 +24,10 @@ public class Board {
                 }
             }
         }
-        return board;
     }
 
     // Fill the top of the playing board with white pieces (2s)
-    private int[][] fillWhites() {
+    private void fillWhites() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (j % 2 == 0) {
@@ -40,7 +39,6 @@ public class Board {
                 }
             }
         }
-        return board;
     }
 
     // Print the board

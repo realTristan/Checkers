@@ -80,55 +80,54 @@ public class Move {
     }
 
     // Function to move the piece
-    public int[][] move(int player) {
+    public boolean move(int player) {
         if (startingPieceValue != player) {
             System.out.println("It's " + (player == 1 ? "black" : "white") + "'s turn!");
-            return board;
+            return false;
         }
 
         // Move the piece by 1 space
         if (jump(1, false)) {
-            return board;
+            return true;
         }
 
         // Store the middle row of a two space jump
-        int[] middleRow;
+        int middleValue;
 
         // If moving left and black piece
         if (startingPieceValue == 1 && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middleRow = Arrays.copyOfRange(board[startRow - 1], endColumn - 1, startColumn);
+            middleValue = board[startRow - 1][startColumn - 2];
         } 
 
         // If moving left and white piece
         else if (startingPieceValue == 2 && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middleRow = Arrays.copyOfRange(board[startRow + 1], endColumn - 1, startColumn);
+            middleValue = board[startRow + 1][startColumn - 2];
         }
         
         // If moving right and black piece
         else if (startingPieceValue == 1 && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middleRow = Arrays.copyOfRange(board[startRow - 1], startColumn - 1, endColumn);
+            middleValue = board[startRow - 1][startColumn];
         }
 
         // If moving right and white piece
         else if (startingPieceValue == 2 && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middleRow = Arrays.copyOfRange(board[startRow + 1], startColumn - 1, endColumn);
+            middleValue = board[startRow + 1][startColumn];
         }
 
         // Else, return the board
         else {
             System.out.println("You can't move that way!");
-            return board;
+            return false;
         }
         
         // If there's an opposite piece in the middle of the row
-        if (middleRow[1] == startingPieceValue) {
+        if (middleValue == startingPieceValue) {
             System.out.println("You can't jump over your own piece!");
-            return board;
+            return false;
         }
 
         // Else, move the piece by 2 and take the middle piece
-        jump(2, true);
-        return board;
+        return jump(2, true);
     }
 
     // Move the piece
@@ -150,8 +149,6 @@ public class Move {
             else if (takePiece && startingPieceValue == 1) {
                 board[startRow - 1][startColumn - 2] = 0;
             }
-
-            // Return whether moved
             return true;
         }
 
@@ -172,8 +169,6 @@ public class Move {
             else if (takePiece && startingPieceValue == 1) {
                 board[startRow - 1][startColumn] = 0;
             }
-
-            // Return whether moved
             return true;
         }
         return false;
