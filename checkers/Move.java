@@ -10,7 +10,6 @@ public class Move {
     public int endColumn;
     public int startingPieceValue;
     public int endingPieceValue;
-    public int[] middleRow;
     int[][] board;
 
     // Constructor
@@ -87,54 +86,50 @@ public class Move {
             return board;
         }
 
-        // If moving the a black piece
-        if (startingPieceValue == 1 && endColumn == startColumn - 2 && endRow == startRow - 2) {
-            int[] middleRow = Arrays.copyOfRange(board[startRow - 1], endColumn - 1, startColumn);
-            
-            // If there's an opposite piece in the middle of the row (for black pieces)
-            if (middleRow[1] == 1) {
-                System.out.println("You can't jump over your own piece!");
-                return board;
-            }
+        // Store the middle row of a two space jump
+        int[] middleRow;
 
-            // Else, set the middle piece in the board to 0 and move the piece
-            else {
-                jump(2, true);
-            }
+        // If moving left and black piece
+        if (startingPieceValue == 1 && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
+            middleRow = Arrays.copyOfRange(board[startRow - 1], endColumn - 1, startColumn);
+        } 
+
+        // If moving left and white piece
+        else if (startingPieceValue == 2 && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
+            middleRow = Arrays.copyOfRange(board[startRow + 1], endColumn - 1, startColumn);
+        }
+        
+        // If moving right and black piece
+        else if (startingPieceValue == 1 && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
+            middleRow = Arrays.copyOfRange(board[startRow - 1], startColumn - 1, endColumn);
         }
 
-        // If moving the a white piece
-        else if (startingPieceValue == 2 && endColumn == startColumn + 2 && endRow == startRow + 2) {
-            int[] middleRow = Arrays.copyOfRange(board[startRow + 1], startColumn - 1, endColumn);
-
-            // If there's an opposite piece in the middle of the row (for white pieces)
-            if (middleRow[1] == 2) {
-                System.out.println("You can't jump over your own piece!");
-                return board;
-            }
-
-            // Else, set the middle piece in the board to 0 and move the piece
-            else {
-                jump(2, true);
-            }
+        // If moving right and white piece
+        else if (startingPieceValue == 2 && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
+            middleRow = Arrays.copyOfRange(board[startRow + 1], startColumn - 1, endColumn);
         }
+
+        // Else, return the board
+        else {
+            System.out.println("You can't move that way!");
+            return board;
+        }
+        
+        // If there's an opposite piece in the middle of the row
+        if (middleRow[1] == startingPieceValue) {
+            System.out.println("You can't jump over your own piece!");
+            return board;
+        }
+
+        // Else, move the piece by 2 and take the middle piece
+        jump(2, true);
         return board;
     }
 
     // Move the piece
-    //
-    // left white: DOES NOT WORK (DOESN'T EVEN MOVE) <== CHECK IF STATEMENTS N SHIT
-    //
-    // left black: DONE
-    //
-    // right white: DONE
-    //
-    // right black: DOES NOT WORK (DOESN'T EVEN MOVE) <== CHECK IF STATEMENTS N SHIT
-    //
     private boolean jump(int jumpSpaces, boolean takePiece) {
-
         // If canMoveLeft and is moving left...
-        if (canMoveLeft && endColumn == startColumn - jumpSpaces) {
+        if (canMoveLeft && endColumn == startColumn - jumpSpaces && (endRow == startRow - jumpSpaces || endRow == startRow + jumpSpaces)) {
             // endingPieceValue = startingPieceValue;
             board[endRow][endColumn - 1] = startingPieceValue;
 
@@ -143,9 +138,7 @@ public class Move {
 
             // If taking a piece for white
             if (takePiece && startingPieceValue == 2) {
-                System.out.println(Arrays.toString(board[startRow]));
-                System.out.println(startColumn);
-                board[startRow][startColumn - 2] = 0;
+                board[startRow + 1][startColumn - 2] = 0;
             } 
 
             // If taking a piece for black
@@ -158,7 +151,7 @@ public class Move {
         }
 
         // If canMoveRight and is moving right...
-        else if (canMoveRight && endColumn == startColumn + jumpSpaces) {
+        else if (canMoveRight && endColumn == startColumn + jumpSpaces && (endRow == startRow + jumpSpaces || endRow == startRow - jumpSpaces)) {
             // endingPieceValue = startingPieceValue;
             board[endRow][endColumn - 1] = startingPieceValue;
 
@@ -172,9 +165,7 @@ public class Move {
 
             // If taking a piece for black
             else if (takePiece && startingPieceValue == 1) {
-                System.out.println(Arrays.toString(board[startRow]));
-                System.out.println(startColumn);
-                board[startRow][startColumn - 2] = 0;
+                board[startRow - 1][startColumn] = 0;
             }
 
             // Return whether moved
