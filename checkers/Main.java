@@ -20,7 +20,7 @@ class Main {
             System.out.print("Enter a move (e.g C-2 > D-3): ");
             Move move = new Move(sc.nextLine(), board.board);
             if (move.isValid()) {
-                move.move();
+                move.move(turnSwaps % 2 == 0 ? 1 : 2);
                 turnSwaps++;
             }
             

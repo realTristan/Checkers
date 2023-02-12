@@ -1,11 +1,12 @@
 # Checkers
 ![how-to-play-checkers-board-2](https://user-images.githubusercontent.com/75189508/218342850-a0bef8cb-abb7-4643-b5dd-2454ff331cd6.jpg)
 
+# Replit
+https://replit.com/@realTristan/checkers
+
 # To-do
 - Once piece reaches other side of the board, they can move in any direction
 - have a canMoveForward and canMoveBack to detect if the piece is at the top or bottom of the board
-- make it detect who's turn it is
-
 
 # License
 MIT License

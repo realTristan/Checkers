@@ -80,7 +80,12 @@ public class Move {
     }
 
     // Function to move the piece
-    public int[][] move() {
+    public int[][] move(int player) {
+        if (startingPieceValue != player) {
+            System.out.println("It's " + (player == 1 ? "black" : "white") + "'s turn!");
+            return board;
+        }
+
         // Move the piece by 1 space
         if (jump(1, false)) {
             return board;
