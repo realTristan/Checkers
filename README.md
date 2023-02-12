@@ -4,6 +4,7 @@
 # To-do
 - Once piece reaches other side of the board, they can move in any direction
 - have a canMoveForward and canMoveBack to detect if the piece is at the top or bottom of the board
+- make it detect who's turn it is
 
 
 # License
