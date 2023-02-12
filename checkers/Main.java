@@ -12,15 +12,8 @@ class Main {
         // Ask the user to enter a move
         int turnSwaps = 0;
         while (true) {
-            // Print who's turn it is
-            if (turnSwaps % 2 == 0) {
-                System.out.print("(Black) ");
-            } else {
-                System.out.print("(White) ");
-            }
-
             // Get the move from the user
-            System.out.print("Enter a move (e.g C-2 > D-3): ");
+            System.out.print(turnSwaps % 2 == 0 ? "(Black)" : "(White)" + " Enter a move (e.g C-2 > D-3): ");
             Move move = new Move(sc.nextLine(), board.board);
 
             // Check if the move is valid
