@@ -1,5 +1,4 @@
 # Checkers
-Play Checkers in the Terminal!
 ![how-to-play-checkers-board-2](https://user-images.githubusercontent.com/75189508/218342850-a0bef8cb-abb7-4643-b5dd-2454ff331cd6.jpg)
 
 # To-do
