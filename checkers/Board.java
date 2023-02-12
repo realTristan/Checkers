@@ -3,7 +3,6 @@ package checkers;
 public class Board {
     public int[][] board = new int[8][8];
     public static final String[] ROWS = {"A", "B", "C", "D", "E", "F", "G", "H"};
-    public static final int[] COLUMNS = {1, 2, 3, 4, 5, 6, 7, 8};
 
     // Constructor
     public Board() {
@@ -45,8 +44,8 @@ public class Board {
     public void print() {
         // Print the column numbers
         System.out.print("\t");
-        for (int i = 0; i < COLUMNS.length; i++) {
-            System.out.print(COLUMNS[i] + " ");
+        for (int i = 0; i < 8; i++) {
+            System.out.print(i + 1 + " ");
         }
         System.out.println("\n");
 

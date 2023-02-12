@@ -2,14 +2,17 @@ package checkers;
 import java.util.Arrays;
 
 public class Move {
-    public boolean canMoveLeft;
-    public boolean canMoveRight;
+    // Positions
     public int startRow;
     public int startColumn;
     public int endRow;
     public int endColumn;
+
+    // Piece Values
     public int startingPieceValue;
     public int endingPieceValue;
+
+    // Board
     int[][] board;
 
     // Constructor
@@ -34,10 +37,6 @@ public class Move {
         // Get the ending row and column of the piece
         endRow = Arrays.asList(Board.ROWS).indexOf(end[0]);
         endColumn = Integer.parseInt(end[1]);
-
-        // Can the pieces move left and right?
-        canMoveLeft = (startColumn != 1 && endColumn == startColumn - 1) || (startColumn != 2 && endColumn == startColumn - 2);
-        canMoveRight = (startColumn != 8 && endColumn == startColumn + 1) || (startColumn != 7 && endColumn == startColumn + 2);
 
         // Get the starting and ending piece values
         startingPieceValue = board[startRow][startColumn - 1];
@@ -132,8 +131,8 @@ public class Move {
 
     // Move the piece
     private boolean jump(int jumpSpaces, boolean takePiece) {
-        // If canMoveLeft and is moving left...
-        if (canMoveLeft && endColumn == startColumn - jumpSpaces && (endRow == startRow - jumpSpaces || endRow == startRow + jumpSpaces)) {
+        // If moving left...
+        if (endColumn == startColumn - jumpSpaces && (endRow == startRow - jumpSpaces || endRow == startRow + jumpSpaces)) {
             // endingPieceValue = startingPieceValue;
             board[endRow][endColumn - 1] = startingPieceValue;
 
@@ -152,8 +151,8 @@ public class Move {
             return true;
         }
 
-        // If canMoveRight and is moving right...
-        else if (canMoveRight && endColumn == startColumn + jumpSpaces && (endRow == startRow + jumpSpaces || endRow == startRow - jumpSpaces)) {
+        // If moving right...
+        else if (endColumn == startColumn + jumpSpaces && (endRow == startRow + jumpSpaces || endRow == startRow - jumpSpaces)) {
             // endingPieceValue = startingPieceValue;
             board[endRow][endColumn - 1] = startingPieceValue;
 
