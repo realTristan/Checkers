@@ -6,7 +6,7 @@ https://replit.com/@realTristan/checkers
 
 # To-do
 - Once piece reaches other side of the board, they can move in any direction
-- have a canMoveForward and canMoveBack to detect if the piece is at the top or bottom of the board
+- Make a GUI Version
 
 # License
 MIT License
