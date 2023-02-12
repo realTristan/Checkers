@@ -150,9 +150,7 @@ public class Move {
 
             // If taking a piece for black
             else if (takePiece && startingPieceValue == 1) {
-                System.out.println(Arrays.toString(board[startRow]));
-                System.out.println(startColumn);
-                board[startRow - 1][startColumn] = 0;
+                board[startRow - 1][startColumn - 2] = 0;
             }
 
             // Return whether moved
@@ -169,8 +167,6 @@ public class Move {
 
             // If taking a piece for white
             if (takePiece && startingPieceValue == 2) {
-                System.out.println(Arrays.toString(board[startRow]));
-                System.out.println(startColumn);
                 board[startRow + 1][startColumn] = 0;
             }
 
