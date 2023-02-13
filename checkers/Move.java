@@ -126,7 +126,7 @@ public class Move {
             return false;
         }
         
-        // If there's an opposite piece in the middle of the row
+        // If there's the same piece in the middle of the jump
         if (middlePiece.value == startingPiece.value) {
             System.out.println("\nYou can't jump over your own piece!\n");
             return false;
@@ -170,7 +170,8 @@ public class Move {
             else if (takePiece && startingPiece.value == 1) {
                 board[startRow - 1][startColumn - 2] = new Piece("■", 0);
             }
-            // Check if the piece is a king
+
+            // Check if the piece will become a king
             checkKing();
 
             // Then return true
@@ -194,14 +195,15 @@ public class Move {
             else if (takePiece && startingPiece.value == 1) {
                 board[startRow - 1][startColumn] = new Piece("■", 0);
             }
-            // Check if the piece is a king
+
+            // Check if the piece will become a king
             checkKing();
 
             // Then return true
             return true;
         }
 
-        // Check if the piece is a king
+        // Check if the piece will become a king
         checkKing();
 
         // Then return false
