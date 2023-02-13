@@ -8,20 +8,20 @@ public class Move {
     public int endRow;
     public int endColumn;
 
-    // Piece Values
-    public int startingPieceValue;
-    public int endingPieceValue;
+    // Pieces
+    public Piece startingPiece;
+    public Piece endingPiece;
 
     // Board
-    int[][] board;
+    Piece[][] board;
 
     // Constructor
-    public Move(String move, int[][] _board) {
+    public Move(String move, Piece[][] _board) {
         board = _board;
 
         // Check if the move is in the correct format
         if (!move.matches("[A-H]-[1-8] > [A-H]-[1-8]")) {
-            System.out.println("Invalid move format!");
+            System.out.println("\nInvalid move format!\n");
             return;
         }
 
@@ -39,89 +39,94 @@ public class Move {
         endColumn = Integer.parseInt(end[1]);
 
         // Get the starting and ending piece values
-        startingPieceValue = board[startRow][startColumn - 1];
-        endingPieceValue = board[endRow][endColumn - 1];
+        startingPiece = board[startRow][startColumn - 1];
+        endingPiece = board[endRow][endColumn - 1];
     }
 
 
     // Check if the move is valid
-    public boolean isValid() {
+    public boolean isValid(int player) {
+        if (startingPiece.value != player) {
+            System.out.println("It's " + (player == 1 ? "black" : "white") + "'s turn!");
+            return false;
+        }
+
+        if (startingPiece == null) {
+            System.out.println("\nThere is no piece at that location!\n");
+            return false;
+        }
+
         // Check if the starting piece is a 0
-        if (startingPieceValue == 0) {
-            System.out.println("There is no piece at that location!");
+        if (startingPiece.value == 0) {
+            System.out.println("\nThere is no piece at that location!\n");
             return false;
         }
 
         // Check if the ending piece is a 0
-        if (endingPieceValue != 0) {
-            System.out.println("There is already a piece at that location!");
+        if (endingPiece.value != 0) {
+            System.out.println("\nThere is already a piece at that location!\n");
             return false;
         }
 
         // Check if the piece is moving forward (for white pieces)
-        if (startingPieceValue == 2 && endRow < startRow) {
-            System.out.println("You can't move backwards!");
+        if (startingPiece.value == 2 && !startingPiece.isKing && endRow < startRow) {
+            System.out.println("\nYou can't move backwards!\n");
             return false;
         }
 
         // Check if the piece is moving forward (for black pieces)
-        if (startingPieceValue == 1 && endRow > startRow) {
-            System.out.println("You can't move backwards!");
+        if (startingPiece.value == 1 && !startingPiece.isKing && endRow > startRow) {
+            System.out.println("\nYou can't move backwards!\n");
             return false;
         }
 
         // Check if trying to move to the same row
         if (endRow == startRow) {
-            System.out.println("You can't move that way!");
+            System.out.println("\nYou can't move that way!\n");
             return false;
         }
         return true;
     }
 
     // Function to move the piece
-    public boolean move(int player) {
-        if (startingPieceValue != player) {
-            System.out.println("It's " + (player == 1 ? "black" : "white") + "'s turn!");
-            return false;
-        }
-
+    public boolean move() {
         // Move the piece by 1 space
         if (jump(1, false)) {
             return true;
         }
 
         // Store the middle row of a two space jump
-        int middleValue;
+        Piece middlePiece;
 
         // If moving left and black piece
-        if (startingPieceValue == 1 && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middleValue = board[startRow - 1][startColumn - 2];
+        if (endRow < startRow && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
+            middlePiece = board[startRow - 1][startColumn - 2];
         } 
 
         // If moving left and white piece
-        else if (startingPieceValue == 2 && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middleValue = board[startRow + 1][startColumn - 2];
+        else if (endRow > startRow && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
+            middlePiece = board[startRow + 1][startColumn - 2];
         }
         
         // If moving right and black piece
-        else if (startingPieceValue == 1 && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middleValue = board[startRow - 1][startColumn];
+        else if (endRow < startRow && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
+            middlePiece = board[startRow - 1][startColumn];
         }
 
         // If moving right and white piece
-        else if (startingPieceValue == 2 && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middleValue = board[startRow + 1][startColumn];
+        else if (endRow > startRow && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
+            middlePiece = board[startRow + 1][startColumn];
         }
 
         // Else, return the board
         else {
-            System.out.println("You can't move that way!");
+            System.out.println("\nYou can't move that way!\n");
             return false;
         }
         
         // If there's an opposite piece in the middle of the row
-        if (middleValue == startingPieceValue) {
-            System.out.println("You can't jump over your own piece!");
+        if (middlePiece.value == startingPiece.value) {
+            System.out.println("\nYou can't jump over your own piece!\n");
             return false;
         }
 
@@ -129,47 +134,75 @@ public class Move {
         return jump(2, true);
     }
 
+    // Function to check if the piece is a king
+    private void checkKing() {
+        // If the white piece made it to the other side of the board
+        if (endRow == 7 && startingPiece.value == 2) {
+            startingPiece.isKing = true;
+            startingPiece.placeholder = "Q";
+        }
+
+        // If the black piece made it to the other side of the board
+        else if (endRow == 0 && startingPiece.value == 1) {
+            startingPiece.isKing = true;
+            startingPiece.placeholder = "K";
+        }
+    }
+
     // Move the piece
     private boolean jump(int jumpSpaces, boolean takePiece) {
         // If moving left...
         if (endColumn == startColumn - jumpSpaces && (endRow == startRow - jumpSpaces || endRow == startRow + jumpSpaces)) {
             // endingPieceValue = startingPieceValue;
-            board[endRow][endColumn - 1] = startingPieceValue;
+            board[endRow][endColumn - 1] = startingPiece;
 
             // Set the starting piece value to 0
-            board[startRow][startColumn - 1] = 0;
+            board[startRow][startColumn - 1] = new Piece("■", 0);
 
             // If taking a piece for white
-            if (takePiece && startingPieceValue == 2) {
-                board[startRow + 1][startColumn - 2] = 0;
+            if (takePiece && startingPiece.value == 2) {
+                board[startRow + 1][startColumn - 2] = new Piece("■", 0);
             } 
 
             // If taking a piece for black
-            else if (takePiece && startingPieceValue == 1) {
-                board[startRow - 1][startColumn - 2] = 0;
+            else if (takePiece && startingPiece.value == 1) {
+                board[startRow - 1][startColumn - 2] = new Piece("■", 0);
             }
+            // Check if the piece is a king
+            checkKing();
+
+            // Then return true
             return true;
         }
 
         // If moving right...
         else if (endColumn == startColumn + jumpSpaces && (endRow == startRow + jumpSpaces || endRow == startRow - jumpSpaces)) {
             // endingPieceValue = startingPieceValue;
-            board[endRow][endColumn - 1] = startingPieceValue;
+            board[endRow][endColumn - 1] = startingPiece;
 
             // Set the starting piece value to 0
-            board[startRow][startColumn - 1] = 0;
+            board[startRow][startColumn - 1] = new Piece("■", 0);
 
             // If taking a piece for white
-            if (takePiece && startingPieceValue == 2) {
-                board[startRow + 1][startColumn] = 0;
+            if (takePiece && startingPiece.value == 2) {
+                board[startRow + 1][startColumn] = new Piece("■", 0);
             }
 
             // If taking a piece for black
-            else if (takePiece && startingPieceValue == 1) {
-                board[startRow - 1][startColumn] = 0;
+            else if (takePiece && startingPiece.value == 1) {
+                board[startRow - 1][startColumn] = new Piece("■", 0);
             }
+            // Check if the piece is a king
+            checkKing();
+
+            // Then return true
             return true;
         }
+
+        // Check if the piece is a king
+        checkKing();
+
+        // Then return false
         return false;
     }
 }

@@ -4,9 +4,15 @@
 # Replit
 https://replit.com/@realTristan/checkers
 
+# How to play
+Black is the Number 1, and if King (has reached the end of the board), then K
+White is the Number 2, and if Queen (has reached the end of the board), then Q
+
+Enter a move from position Row1-Column1 > Row2-Column2 (e.g F-1 > E-2)
+
 # To-do
-- Once piece reaches other side of the board, they can move in any direction
 - Make a GUI Version
+- Add a Winning Screen and Score Counter
 
 # License
 MIT License
