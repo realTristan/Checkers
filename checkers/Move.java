@@ -52,17 +52,18 @@ public class Move {
             return false;
         }
 
+        // Check if the starting piece is a 0
+        if (startingPiece.value == 0) {
+            System.out.println("\nThere is no piece at that location!\n");
+            return false;
+        }
+
         // Check player's turn
         if (startingPiece.value != player) {
             System.out.println("It's " + (player == 1 ? "black" : "white") + "'s turn!");
             return false;
         }
 
-        // Check if the starting piece is a 0
-        if (startingPiece.value == 0) {
-            System.out.println("\nThere is no piece at that location!\n");
-            return false;
-        }
 
         // Check if the ending piece is a 0
         if (endingPiece.value != 0) {
