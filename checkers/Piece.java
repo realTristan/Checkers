@@ -6,8 +6,8 @@ public class Piece {
     public boolean isKing;
 
     // Constructor
-    public Piece(String string, int _value) {
-        placeholder = string;
+    public Piece(String _placeholder, int _value) {
+        placeholder = _placeholder;
         value = _value;
         isKing = false;
     }
