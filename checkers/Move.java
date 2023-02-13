@@ -71,13 +71,13 @@ public class Move {
         }
 
         // Check if the piece is moving forward (for white pieces)
-        if (startingPiece.value == 2 && !startingPiece.isKing && endRow < startRow) {
+        if (startingPiece.value == 2 && !startingPiece.isCrowned && endRow < startRow) {
             System.out.println("\nYou can't move backwards!\n");
             return false;
         }
 
         // Check if the piece is moving forward (for black pieces)
-        if (startingPiece.value == 1 && !startingPiece.isKing && endRow > startRow) {
+        if (startingPiece.value == 1 && !startingPiece.isCrowned && endRow > startRow) {
             System.out.println("\nYou can't move backwards!\n");
             return false;
         }
@@ -140,13 +140,13 @@ public class Move {
     private void checkKing() {
         // If the white piece made it to the other side of the board
         if (endRow == 7 && startingPiece.value == 2) {
-            startingPiece.isKing = true;
+            startingPiece.isCrowned = true;
             startingPiece.placeholder = "Q";
         }
 
         // If the black piece made it to the other side of the board
         else if (endRow == 0 && startingPiece.value == 1) {
-            startingPiece.isKing = true;
+            startingPiece.isCrowned = true;
             startingPiece.placeholder = "K";
         }
     }
@@ -162,12 +162,12 @@ public class Move {
             board[startRow][startColumn - 1] = new Piece("■", 0);
 
             // If taking a piece for white
-            if (takePiece && startingPiece.value == 2) {
+            if (takePiece && endRow > startRow) {
                 board[startRow + 1][startColumn - 2] = new Piece("■", 0);
             } 
 
             // If taking a piece for black
-            else if (takePiece && startingPiece.value == 1) {
+            else if (takePiece && endRow < startRow) {
                 board[startRow - 1][startColumn - 2] = new Piece("■", 0);
             }
 
@@ -187,12 +187,12 @@ public class Move {
             board[startRow][startColumn - 1] = new Piece("■", 0);
 
             // If taking a piece for white
-            if (takePiece && startingPiece.value == 2) {
+            if (takePiece && endRow > startRow) {
                 board[startRow + 1][startColumn] = new Piece("■", 0);
             }
 
             // If taking a piece for black
-            else if (takePiece && startingPiece.value == 1) {
+            else if (takePiece && endRow < startRow) {
                 board[startRow - 1][startColumn] = new Piece("■", 0);
             }
 
