@@ -46,13 +46,15 @@ public class Move {
 
     // Check if the move is valid
     public boolean isValid(int player) {
-        if (startingPiece.value != player) {
-            System.out.println("It's " + (player == 1 ? "black" : "white") + "'s turn!");
+        // Check if the starting piece is null
+        if (startingPiece == null) {
+            System.out.println("\nInvalid Move!\n");
             return false;
         }
 
-        if (startingPiece == null) {
-            System.out.println("\nThere is no piece at that location!\n");
+        // Check player's turn
+        if (startingPiece.value != player) {
+            System.out.println("It's " + (player == 1 ? "black" : "white") + "'s turn!");
             return false;
         }
 
