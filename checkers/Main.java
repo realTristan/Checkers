@@ -14,7 +14,7 @@ class Main {
         while (true) {
             // Get the move from the user
             System.out.print((turnSwaps % 2 == 0 ? "[Black (1)]" : "[White (2)]") + " Enter a move (e.g F-1 > E-2): ");
-            Move move = new Move(sc.nextLine(), board.board);
+            Move move = new Move(sc.nextLine(), board);
 
             // Clear the terminal
             System.out.print("\033\143");

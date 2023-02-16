@@ -13,10 +13,10 @@ public class Move {
     public Piece endingPiece;
 
     // Board
-    Piece[][] board;
+    Board board;
 
     // Constructor
-    public Move(String move, Piece[][] _board) {
+    public Move(String move, Board _board) {
         board = _board;
 
         // Check if the move is in the correct format
@@ -39,8 +39,8 @@ public class Move {
         endColumn = Integer.parseInt(end[1]);
 
         // Get the starting and ending piece values
-        startingPiece = board[startRow][startColumn - 1];
-        endingPiece = board[endRow][endColumn - 1];
+        startingPiece = board.board[startRow][startColumn - 1];
+        endingPiece = board.board[endRow][endColumn - 1];
     }
 
 
@@ -102,22 +102,22 @@ public class Move {
 
         // If moving left and black piece
         if (endRow < startRow && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middlePiece = board[startRow - 1][startColumn - 2];
+            middlePiece = board.board[startRow - 1][startColumn - 2];
         } 
 
         // If moving left and white piece
         else if (endRow > startRow && endColumn == startColumn - 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middlePiece = board[startRow + 1][startColumn - 2];
+            middlePiece = board.board[startRow + 1][startColumn - 2];
         }
         
         // If moving right and black piece
         else if (endRow < startRow && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middlePiece = board[startRow - 1][startColumn];
+            middlePiece = board.board[startRow - 1][startColumn];
         }
 
         // If moving right and white piece
         else if (endRow > startRow && endColumn == startColumn + 2 && (endRow == startRow + 2 || endRow == startRow - 2)) {
-            middlePiece = board[startRow + 1][startColumn];
+            middlePiece = board.board[startRow + 1][startColumn];
         }
 
         // Else, return the board
@@ -156,19 +156,19 @@ public class Move {
         // If moving left...
         if (endColumn == startColumn - jumpSpaces && (endRow == startRow - jumpSpaces || endRow == startRow + jumpSpaces)) {
             // endingPieceValue = startingPieceValue;
-            board[endRow][endColumn - 1] = startingPiece;
+            board.board[endRow][endColumn - 1] = startingPiece;
 
             // Set the starting piece value to 0
-            board[startRow][startColumn - 1] = new Piece("■", 0);
+            board.board[startRow][startColumn - 1] = new Piece("■", 0);
 
             // If taking a piece for white
             if (takePiece && endRow > startRow) {
-                board[startRow + 1][startColumn - 2] = new Piece("■", 0);
+                board.board[startRow + 1][startColumn - 2] = new Piece("■", 0);
             } 
 
             // If taking a piece for black
             else if (takePiece && endRow < startRow) {
-                board[startRow - 1][startColumn - 2] = new Piece("■", 0);
+                board.board[startRow - 1][startColumn - 2] = new Piece("■", 0);
             }
 
             // Check if the piece will become a king
@@ -181,19 +181,19 @@ public class Move {
         // If moving right...
         else if (endColumn == startColumn + jumpSpaces && (endRow == startRow + jumpSpaces || endRow == startRow - jumpSpaces)) {
             // endingPieceValue = startingPieceValue;
-            board[endRow][endColumn - 1] = startingPiece;
+            board.board[endRow][endColumn - 1] = startingPiece;
 
             // Set the starting piece value to 0
-            board[startRow][startColumn - 1] = new Piece("■", 0);
+            board.board[startRow][startColumn - 1] = new Piece("■", 0);
 
             // If taking a piece for white
             if (takePiece && endRow > startRow) {
-                board[startRow + 1][startColumn] = new Piece("■", 0);
+                board.board[startRow + 1][startColumn] = new Piece("■", 0);
             }
 
             // If taking a piece for black
             else if (takePiece && endRow < startRow) {
-                board[startRow - 1][startColumn] = new Piece("■", 0);
+                board.board[startRow - 1][startColumn] = new Piece("■", 0);
             }
 
             // Check if the piece will become a king
